@@ -1,0 +1,17 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "front-service"
+  namespace: "default"
+  labels:
+    app: "front"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 3000
+  selector:
+    app: "front"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
