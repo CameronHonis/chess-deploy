@@ -45,4 +45,4 @@ def load_deployment(preset: DeploymentPreset) -> client.V1Deployment:
 
 def deploy_deployment(namespace: str, preset: DeploymentPreset):
     deployment = load_deployment(preset)
-    client.AppsV1Api().create_namespaced_deployment(namespace, deployment)
+    print(client.AppsV1Api().create_namespaced_deployment(namespace, deployment))

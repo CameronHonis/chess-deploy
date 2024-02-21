@@ -1,4 +1,5 @@
 ---
+# NOTE: not valid for "front" deployment
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
 metadata:
