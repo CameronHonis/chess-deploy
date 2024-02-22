@@ -5,13 +5,16 @@ from yaml_helpers import load_snaked_yml
 
 
 class DeploymentPreset(Enum):
+    NGINX = "nginx"
     FRONT = "front"
     ARBITRATOR = "arbitrator"
     BOT_CLIENT = "bot_client"
 
 
 def load_deployment(preset: DeploymentPreset) -> client.V1Deployment:
-    if preset == DeploymentPreset.BOT_CLIENT:
+    if preset == DeploymentPreset.NGINX:
+        deployment_yml = load_snaked_yml("templates/nginx_deployment.yml")
+    elif preset == DeploymentPreset.BOT_CLIENT:
         ...
     elif preset == DeploymentPreset.ARBITRATOR:
         ...
