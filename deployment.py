@@ -17,7 +17,7 @@ def load_deployment(preset: DeploymentPreset) -> client.V1Deployment:
     elif preset == DeploymentPreset.BOT_CLIENT:
         ...
     elif preset == DeploymentPreset.ARBITRATOR:
-        ...
+        deployment_yml = load_snaked_yml("templates/arbitrator_deployment.yml")
     elif preset == DeploymentPreset.FRONT:
         deployment_yml = load_snaked_yml("templates/front_deployment.yml")
     else:

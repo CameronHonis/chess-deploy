@@ -7,5 +7,5 @@ from service import ServicePreset, deploy_service
 if __name__ == '__main__':
     config.load_kube_config()
     # clear_cluster()
-    # deploy_deployment("default", DeploymentPreset.FRONT)
-    deploy_service("default", ServicePreset.FRONT)
+    deploy_deployment("default", DeploymentPreset.ARBITRATOR)
+    # deploy_service("default", ServicePreset.FRONT)
