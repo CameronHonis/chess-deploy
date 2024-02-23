@@ -1,0 +1,131 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "nginx-1"
+  namespace: "default"
+  labels:
+    app: "nginx-1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "nginx-1"
+  template:
+    metadata:
+      labels:
+        app: "nginx-1"
+    spec:
+      containers:
+      - name: "nginx-1"
+        image: "nginx:latest"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "front-deployment"
+  namespace: "default"
+  labels:
+    app: "front"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "front"
+  template:
+    metadata:
+      labels:
+        app: "front"
+    spec:
+      containers:
+        - name: "front"
+          image: "gcr.io/compact-pier-403417/chess-client@sha256:6b66704fe06ff87d5440e4ef0c77b81cf0bcbe760628cacbb26194ce8d504ddf"
+          env:
+            - name: ARBITRATOR_URL
+              value: "arbitrator-service"
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "arbitrator-config"
+  namespace: "default"
+  labels:
+    app: "arbitrator"
+data:
+  ARBITRATOR_URL: "arbitrator-service"
+---
+# NOTE: not valid for "front" deployment
+apiVersion: "autoscaling/v2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "nginx-1-hpa-pkjp"
+  namespace: "default"
+  labels:
+    app: "nginx-1"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "nginx-1"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: "Resource"
+      resource:
+        name: "cpu"
+        target:
+          type: "Utilization"
+          averageUtilization: 80
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "front-service"
+  namespace: "default"
+  labels:
+    app: "front"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 3000
+  selector:
+    app: "front"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "arbitrator"
+  namespace: "default"
+  labels:
+    app: "arbitrator"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "arbitrator"
+  template:
+    metadata:
+      labels:
+        app: "arbitrator"
+    spec:
+      containers:
+      - name: "chess-arbitrator-sha256-1"
+        image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator@sha256:1150a5127a57a2ee4de9f51d329a8ae47a74986fbf21a011e975255fd54d1cb0"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "arbitrator-service"
+  namespace: "default"
+  labels:
+    app: "arbitrator"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: "arbitrator"
+  type: "ClusterIP"
