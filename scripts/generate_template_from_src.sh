@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "$0")/.." || exit
+cd "$(dirname "$0")/../k8s" || exit
 
 template_name="template0"
 if ls templates | grep -qE "template[0-9]*"; then
@@ -14,7 +14,7 @@ fi
 template_contents=""
 while read -r src_file_name; do
   template_contents+="---\n$(cat "$src_file_name")\n"
-done < <(find templates/src -type f)
+done < <(find src -type f)
 
 echo -e "$template_contents" > "templates/$template_name"
 echo "Generated templates/$template_name"

@@ -17,7 +17,6 @@ spec:
     spec:
       containers:
         - name: "front"
-          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:v0.0.2"
-          env:
-            - name: ARBITRATOR_URL
-              value: "arbitrator-service"
+          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest"
+          command:
+            - "./scripts/pod_init.sh"

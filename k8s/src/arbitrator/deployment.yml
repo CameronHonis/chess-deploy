@@ -18,4 +18,4 @@ spec:
     spec:
       containers:
         - name: "chess-arbitrator-sha256-1"
-          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator@sha256:1150a5127a57a2ee4de9f51d329a8ae47a74986fbf21a011e975255fd54d1cb0"
+          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest"
