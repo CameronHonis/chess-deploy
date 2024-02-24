@@ -1,0 +1,40 @@
+services:
+  front:
+    image: chess-front:latest
+    environment:
+      REACT_APP_ARBITRATOR_URL: "localhost:8081"
+    command:
+      - "./scripts/pod_init.sh"
+    ports:
+      - "80:3000"
+    networks:
+      - external
+      - internal
+
+  front-proxy:
+    image: front-proxy:latest
+    environment:
+      PROXY_IN_PORT: "8081"
+      PROXY_OUT_PORT: "8080"
+      PROXY_OUT_ADDR: "arbitrator"
+    command:
+      - "./scripts/pod_init.sh"
+    ports:
+      - "8081:8081"
+    networks:
+      - external
+      - internal
+
+  arbitrator:
+    image: chess-arbitrator:latest
+    command:
+      - "./scripts/pod_init.sh"
+    ports:
+      - "8080:8080"
+    networks:
+      - internal
+networks:
+  external:
+    external: true
+  internal:
+    internal: true
