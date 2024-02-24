@@ -1,0 +1,80 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "front-deployment"
+  namespace: "default"
+  labels:
+    app: "front"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "front"
+  template:
+    metadata:
+      labels:
+        app: "front"
+    spec:
+      containers:
+        - name: "front"
+          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest"
+          command:
+            - "./scripts/pod_init.sh"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "front-service"
+  namespace: "default"
+  labels:
+    app: "front"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  selector:
+    app: "front"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
+---
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "arbitrator"
+  namespace: "default"
+  labels:
+    app: "arbitrator"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "arbitrator"
+  template:
+    metadata:
+      labels:
+        app: "arbitrator"
+    spec:
+      containers:
+        - name: "chess-arbitrator-sha256-1"
+          image: "gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest"
+---
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "arbitrator-service"
+  namespace: "default"
+  labels:
+    app: "arbitrator"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: "arbitrator"
+  type: "LoadBalancer"
+
