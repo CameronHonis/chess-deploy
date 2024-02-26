@@ -27,7 +27,7 @@ spec:
             - ./scripts/pod_init.sh
           env:
             - name: REACT_APP_ARBITRATOR_URL
-              value: localhost:8081
+              value: localhost:8080
           image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest
           name: front
           ports:
