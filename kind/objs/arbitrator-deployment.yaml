@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o conv
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: arbitrator
+  name: arbitrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: arbitrator
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o conv
+        kompose.version: 1.32.0 (HEAD)
+      labels:
+        io.kompose.network/docker-internal: "true"
+        io.kompose.service: arbitrator
+    spec:
+      containers:
+        - args:
+            - ./scripts/pod_init.sh
+          image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest
+          name: arbitrator
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+      imagePullSecrets:
+        - name: pull-image
+      restartPolicy: Always

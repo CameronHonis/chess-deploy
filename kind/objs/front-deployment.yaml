@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o conv
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: front
+  name: front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: front
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o conv
+        kompose.version: 1.32.0 (HEAD)
+      labels:
+        io.kompose.network/docker-internal: "true"
+        io.kompose.network/external: "true"
+        io.kompose.service: front
+    spec:
+      containers:
+        - args:
+            - ./scripts/pod_init.sh
+          env:
+            - name: REACT_APP_ARBITRATOR_URL
+              value: localhost:8081
+          image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest
+          name: front
+          ports:
+            - containerPort: 3000
+              hostPort: 80
+              protocol: TCP
+      imagePullSecrets:
+        - name: pull-image
+      restartPolicy: Always

@@ -1,6 +1,6 @@
 services:
   front:
-    image: chess-front:latest
+    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest
     environment:
       REACT_APP_ARBITRATOR_URL: "localhost:8081"
     command:
@@ -12,7 +12,7 @@ services:
       - internal
 
   front-proxy:
-    image: front-proxy:latest
+    image: gcr.io/compact-pier-403417/github.com/cameronhonis/nginx-proxy:latest
     environment:
       PROXY_IN_PORT: "8081"
       PROXY_OUT_PORT: "8080"
@@ -26,7 +26,7 @@ services:
       - internal
 
   arbitrator:
-    image: chess-arbitrator:latest
+    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest
     command:
       - "./scripts/pod_init.sh"
     ports:
