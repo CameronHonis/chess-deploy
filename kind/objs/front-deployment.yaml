@@ -31,8 +31,8 @@ spec:
           image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest
           name: front
           ports:
-            - containerPort: 3000
-              hostPort: 80
+            - name: front-port
+              containerPort: 3000
               protocol: TCP
       imagePullSecrets:
         - name: pull-image

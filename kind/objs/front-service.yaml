@@ -10,8 +10,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: front-port
-      nodePort: 30950
-      port: 3000
+    - nodePort: 30950
+      port: 80
+      targetPort: front-port
   selector:
     io.kompose.service: front

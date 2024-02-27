@@ -10,8 +10,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: arbitrator-port
-      nodePort: 30951
+    - nodePort: 30951
       port: 8080
+      targetPort: arbitrator-port
   selector:
     io.kompose.service: arbitrator

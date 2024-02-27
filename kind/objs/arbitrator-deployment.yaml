@@ -24,11 +24,14 @@ spec:
       containers:
         - args:
             - ./scripts/pod_init.sh
+          env:
+            - name: BOT_CLIENT_SECRET
+              value: "bot_client_secret"
           image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest
           name: arbitrator
           ports:
-            - containerPort: 8080
-              hostPort: 8080
+            - name: arbitrator-port
+              containerPort: 8080
               protocol: TCP
       imagePullSecrets:
         - name: pull-image

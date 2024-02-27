@@ -27,10 +27,25 @@ services:
 
   arbitrator:
     image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest
+    environment:
+      BOT_CLIENT_SECRET: "bot_client_secret"
     command:
       - "./scripts/pod_init.sh"
     ports:
       - "8080:8080"
+    networks:
+      - internal
+
+  bot-server:
+    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-bot-server:latest
+    environment:
+      BOT_CLIENT_SECRET: "bot_client_secret"
+      ARBITRATOR_DOMAIN: "arbitrator:8080"
+      ARBITRATOR_PORT: "8080"
+    command:
+      - "./main"
+    ports:
+      - "8082:8082"
     networks:
       - internal
 networks:
