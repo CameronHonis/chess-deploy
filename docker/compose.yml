@@ -1,8 +1,8 @@
 services:
   front:
-    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-client:latest
+    image: "${REGISTRY_LOCATION}/chess-front:${CHESS_FRONT_TAG:-latest}"
     environment:
-       REACT_APP_ARBITRATOR_URL: "localhost:8080"
+       REACT_APP_ARBITRATOR_URL: "${DEPLOY_DOMAIN:-localhost}:${ARBITRATOR_PORT:-8080}"
     command:
       - "./scripts/pod_init.sh"
     ports:
@@ -26,27 +26,28 @@ services:
 #      - internal
 
   arbitrator:
-    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-arbitrator:latest
+    image: "${REGISTRY_LOCATION}/chess-arbitrator:${CHESS_ARBITRATOR_TAG:-latest}"
     environment:
-      BOT_CLIENT_SECRET: "bot_client_secret"
+      LISTEN_PORT: "${ARBITRATOR_PORT:-8080}"
+      BOT_CLIENT_SECRET: "${BOT_CLIENT_SECRET}"
     command:
       - "./scripts/pod_init.sh"
     ports:
-      - "8080:8080"
+      - "${ARBITRATOR_PORT:-8080}:${ARBITRATOR_PORT:-8080}"
     networks:
       - external
       - internal
 
   bot-server:
-    image: gcr.io/compact-pier-403417/github.com/cameronhonis/chess-bot-server:latest
+    image: "${REGISTRY_LOCATION}/chess-bot-server:${CHESS_BOT_SERVER_TAG:-latest}"
     environment:
-      BOT_CLIENT_SECRET: "bot_client_secret"
+      BOT_CLIENT_SECRET: "${BOT_CLIENT_SECRET}"
       ARBITRATOR_DOMAIN: "arbitrator"
-      ARBITRATOR_PORT: "8080"
+      ARBITRATOR_PORT: "${ARBITRATOR_PORT:-8080}"
     command:
       - "./main"
     ports:
-      - "8082:8082"
+      - "${BOT_SERVER_PORT:-8082}:${BOT_SERVER_PORT:-8082}"
     networks:
       - internal
 networks:
