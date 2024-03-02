@@ -2,7 +2,7 @@ services:
   front:
     image: "${REGISTRY_LOCATION}/chess-front:${CHESS_FRONT_TAG:-latest}"
     environment:
-       REACT_APP_ARBITRATOR_URL: "${DEPLOY_DOMAIN:-localhost}:${ARBITRATOR_PORT:-8080}"
+       REACT_APP_ARBITRATOR_URL: "${ARBITRATOR_DOMAIN:-localhost}:${ARBITRATOR_PORT:-8080}"
     command:
       - "./scripts/pod_init.sh"
     ports:
