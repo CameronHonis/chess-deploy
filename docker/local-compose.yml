@@ -1,9 +1,10 @@
+# clone of sibling file compose.yml. Exists to allow for local builds.
 services:
   front:
-    image: "${REGISTRY_LOCATION}/chess-front:${CHESS_FRONT_TAG:-latest}"
+    image: "chess-front:${CHESS_FRONT_TAG:-latest}"
     environment:
-       REACT_APP_ARBITRATOR_DOMAIN: "${ARBITRATOR_DOMAIN:-localhost}"
-       REACT_APP_ARBITRATOR_PORT: "${ARBITRATOR_PORT}"
+      REACT_APP_ARBITRATOR_DOMAIN: "${ARBITRATOR_DOMAIN:-localhost}"
+      REACT_APP_ARBITRATOR_PORT: "${ARBITRATOR_PORT}"
     command:
       - "./scripts/pod_init.sh"
     ports:
@@ -13,7 +14,7 @@ services:
       - internal
 
   arbitrator:
-    image: "${REGISTRY_LOCATION}/chess-arbitrator:${CHESS_ARBITRATOR_TAG:-latest}"
+    image: "chess-arbitrator:${CHESS_ARBITRATOR_TAG:-latest}"
     environment:
       LISTEN_PORT: "${ARBITRATOR_PORT:-8080}"
       BOT_CLIENT_SECRET: "${BOT_CLIENT_SECRET}"
@@ -26,7 +27,7 @@ services:
       - internal
 
   bot-server:
-    image: "${REGISTRY_LOCATION}/chess-bot-server:${CHESS_BOT_SERVER_TAG:-latest}"
+    image: "chess-bot-server:${CHESS_BOT_SERVER_TAG:-latest}"
     environment:
       BOT_CLIENT_SECRET: "${BOT_CLIENT_SECRET}"
       ARBITRATOR_DOMAIN: "arbitrator"
