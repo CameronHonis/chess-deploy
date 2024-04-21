@@ -17,6 +17,7 @@ services:
     environment:
       LISTEN_PORT: "${ARBITRATOR_PORT:-8080}"
       BOT_CLIENT_SECRET: "${BOT_CLIENT_SECRET}"
+      AUTH_KEY_MINS_TO_STALE: "${AUTH_KEY_MINS_TO_STALE:-60}"
     command:
       - "./scripts/pod_init.sh"
     ports:
