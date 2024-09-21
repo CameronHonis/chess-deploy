@@ -11,6 +11,7 @@ services:
     networks:
       - external
       - internal
+    restart: always
 
   arbitrator:
     image: "${REGISTRY_LOCATION}/chess-arbitrator:${CHESS_ARBITRATOR_TAG:-latest}"
@@ -25,6 +26,7 @@ services:
     networks:
       - external
       - internal
+    restart: always
 
   bot-server:
     image: "${REGISTRY_LOCATION}/chess-bot-server:${CHESS_BOT_SERVER_TAG:-latest}"
@@ -38,6 +40,9 @@ services:
       - "${BOT_SERVER_PORT:-8082}:${BOT_SERVER_PORT:-8082}"
     networks:
       - internal
+    restart:
+      always
+
 networks:
   external:
     external: true
